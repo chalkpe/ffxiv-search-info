@@ -13,7 +13,8 @@ export default {
   props: ['name', 'level'],
   computed: {
     shortName () {
-      return `class-${shortNames[this.name] || this.name.toLowerCase()}`
+      const name = this.name.toLowerCase()
+      return `class-${shortNames[name] || name}`
     }
   }
 }
