@@ -1,7 +1,7 @@
 <template>
   <span class="job-badge" :class="shortName" :title="name">
-    <span class="flex-column-i-icon"></span>
-    <span class="flex-column-job-level">{{level}}</span>
+    <span class="job-icon flex-column-i-icon"></span>
+    <span class="job-level" :class="{'level-cap': level === 70}">{{level > 0 ? level : '-'}}</span>
   </span>
 </template>
 
@@ -26,8 +26,12 @@ export default {
     align-items: center;
   }
 
-  .flex-column-i-icon {
+  .job-icon {
     width: 1.5em;
     height: 1.5em;
+  }
+
+  .job-level.level-cap {
+    font-weight: 700;
   }
 </style>
