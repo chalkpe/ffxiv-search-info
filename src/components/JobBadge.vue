@@ -33,6 +33,6 @@ export default {
   }
 
   .job-level.level-cap {
-    font-weight: 700;
+    color: #df9620;
   }
 </style>

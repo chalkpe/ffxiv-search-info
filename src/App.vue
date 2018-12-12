@@ -22,7 +22,7 @@
             type="url"
             class="input"
             placeholder="Please enter URL of Markdown file"
-            @keydown.enter="search"
+            @keydown.enter="request"
             :disabled="isLoading">
         </div>
 
@@ -30,7 +30,7 @@
           <button
             class="button is-info"
             :disabled="isLoading"
-            @click="search">
+            @click="request">
             Generate
           </button>
         </div>
@@ -57,36 +57,47 @@ export default {
   data: () => ({ url: '', isLoading: false, data: null, error: null }),
 
   methods: {
-    search () {
-      this.error = null
-      this.isLoading = true
-
-      parse(this.url)
-        .then(v => {
-          this.data = v
-          location.hash = btoa(this.url)
-        })
-        .catch(err => {
-          console.error(err)
-          this.error = err.message
-        })
-        .finally(() => {
-          this.isLoading = false
-          if (!this.data || !this.data.length) {
-            this.error = this.error || 'No data found at given URL!'
-          }
-        })
-    },
-
     reset () {
       location.hash = ''
-      location.reload()
+    },
+
+    request () {
+      location.hash = btoa(this.url)
+    },
+
+    search () {
+      this.isLoading = true
+      return parse(this.url)
+        .catch(err => (this.error = err.message))
+        .finally(() => (this.isLoading = false))
+    },
+
+    async update () {
+      const code = location.hash.slice(1)
+      if (!code) {
+        this.data = ''
+        this.error = ''
+        return
+      }
+
+      try {
+        this.url = atob(code)
+      } catch (err) {
+        this.data = ''
+        this.error = err.message
+        return
+      }
+
+      this.data = await this.search()
+      this.error = this.data && this.data.length
+        ? ''
+        : this.error || 'No data found at given URL!'
     }
   },
 
   mounted () {
-    const code = location.hash.slice(1)
-    if (code) this.search(this.url = atob(code))
+    this.update()
+    window.addEventListener('hashchange', () => this.update())
   }
 }
 </script>
@@ -101,10 +112,12 @@ export default {
   }
 
   html, body {
-    color: #ddccbb;
-    background-color: #2c2c2c;
-    text-shadow: 0 0 0.15em #777064;
+    height: 100vh;
     padding: 0.5em;
+
+    color: #ddccbb;
+    text-shadow: 0 0 0.15em #777064;
+    background: linear-gradient(180deg, #323232 0%, #2c2c2c 50%, #292f29 100%) no-repeat;
   }
 
   #result {
