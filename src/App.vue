@@ -2,7 +2,7 @@
   <div id="app">
     <section
       id="result"
-      v-if="data && data.length">
+      v-if="ready">
       <job-group v-for="(g, i) of data" :jobs="g" :key="i" />
 
       <footer class="container has-text-centered">
@@ -55,6 +55,11 @@ export default {
   name: 'app',
   components: { JobGroup },
   data: () => ({ url: '', isLoading: false, data: null, error: null }),
+  computed: {
+    ready () {
+      return Array.isArray(this.data) && this.data.length > 0
+    }
+  },
 
   methods: {
     reset () {
@@ -65,33 +70,25 @@ export default {
       location.hash = btoa(this.url)
     },
 
-    search () {
-      this.isLoading = true
-      return parse(this.url)
-        .catch(err => (this.error = err.message))
-        .finally(() => (this.isLoading = false))
-    },
-
     async update () {
+      this.data = this.error = null
+
       const code = location.hash.slice(1)
       if (!code) {
-        this.data = ''
-        this.error = ''
+        this.url = ''
+        this.data = null
         return
       }
 
       try {
-        this.url = atob(code)
+        this.isLoading = true
+        this.data = await parse(this.url = atob(code))
       } catch (err) {
-        this.data = ''
         this.error = err.message
-        return
+      } finally {
+        this.isLoading = false
+        if (!this.error && !this.ready) this.error = 'No data found at given URL!'
       }
-
-      this.data = await this.search()
-      this.error = this.data && this.data.length
-        ? ''
-        : this.error || 'No data found at given URL!'
     }
   },
 
@@ -128,7 +125,7 @@ export default {
   }
 
   footer {
-    padding-top: 0.5em;
+    padding-top: 1.5em;
   }
 
   footer > a {
