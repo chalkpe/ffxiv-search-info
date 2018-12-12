@@ -110,11 +110,14 @@ export default {
 
   html, body {
     height: 100vh;
-    padding: 0.5em;
 
     color: #ddccbb;
     text-shadow: 0 0 0.15em #777064;
     background: linear-gradient(180deg, #323232 0%, #2c2c2c 50%, #292f29 100%) no-repeat;
+  }
+
+  #app {
+    padding: 0.5em;
   }
 
   #result {
