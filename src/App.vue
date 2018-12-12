@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <section
-      id="result"
-      v-if="ready">
-      <job-group v-for="(g, i) of data" :jobs="g" :key="i" />
+    <section v-if="ready">
+      <div id="result">
+        <job-group v-for="(g, i) of data" :jobs="g" :key="i" />
+      </div>
 
       <footer class="container has-text-centered">
         <a @click="reset">[PRESS TO RESET]</a><br>
