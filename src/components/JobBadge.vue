@@ -1,7 +1,7 @@
 <template>
   <span class="job-badge" :class="shortName" :title="name">
     <span class="job-icon flex-column-i-icon"></span>
-    <span class="job-level" :class="{'level-cap': level === 70}">{{level > 0 ? level : '-'}}</span>
+    <span class="job-level" :cap="level === cap">{{level > 0 ? level : '-'}}</span>
   </span>
 </template>
 
@@ -15,6 +15,10 @@ export default {
     shortName () {
       const name = this.name.toLowerCase()
       return `class-${shortNames[name] || name}`
+    },
+
+    cap () {
+      return this.name === '청마도사' ? 50 : 70
     }
   }
 }
@@ -32,7 +36,7 @@ export default {
     height: 1.5em;
   }
 
-  .job-level.level-cap {
+  .job-level[cap] {
     color: #df9620;
   }
 </style>
