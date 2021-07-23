@@ -18,7 +18,7 @@ export default {
     },
 
     cap () {
-      return this.name === '청마도사' ? 60 : 70
+      return this.name === '청마도사' ? 70 : 80
     }
   }
 }
