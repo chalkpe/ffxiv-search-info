@@ -6,9 +6,11 @@
       </div>
 
       <footer class="container has-text-centered">
-        <a @click="reset">[PRESS TO RESET]</a><br>
-        &copy; 2010 - 2018 SQUARE ENIX CO., LTD. All Rights Reserved.<br>
-        Published in Korea by EYEDENTITY ENTERTAINMENT CO., LTD. SQUARE ENIX
+        <a id="reset" @click="reset">[PRESS TO RESET]</a>
+        <span>
+          &copy; 2010 - {{ new Date().getFullYear() }} SQUARE ENIX CO., LTD. All Rights Reserved.<br>
+          Published in Korea by Actoz Soft CO., LTD.
+        </span>
       </footer>
     </section>
 
@@ -38,8 +40,8 @@
       </div>
       <p v-if="error" class="help is-danger">{{ error || 'Unexpected error has occured :(' }}</p>
 
-      <footer>
-        <span>&copy; 2018 Chalk</span>
+      <footer class="main">
+        <span>&copy; 2018-{{ new Date().getFullYear() }} Chalk</span>
         <a href="https://github.com/ChalkPE/ffxiv-search-info/blob/master/LICENSE">MIT License</a>
         <a href="https://github.com/ChalkPE/ffxiv-search-info">View on GitHub</a>
       </footer>
@@ -101,7 +103,12 @@ export default {
 
 <style>
   * {
+    word-break: keep-all;
     font-family: Lato, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  a {
+    color: inherit;
   }
 
   fieldset {
@@ -127,15 +134,18 @@ export default {
     justify-content: center;
   }
 
-  footer {
+  #reset {
+    padding-bottom: 1.5em;
+  }
+
+  footer.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding-top: 1.5em;
   }
 
-  footer > a {
-    color: inherit;
-  }
-
-  footer > * + *::before {
+  footer.main > * + *::before {
     content: " · "
   }
 </style>
