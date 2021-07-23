@@ -1,7 +1,7 @@
 <template>
   <span class="job-badge" :class="shortName" :title="name">
     <span class="job-icon flex-column-i-icon"></span>
-    <span class="job-level" :cap="level === cap">{{level > 0 ? level : '-'}}</span>
+    <span class="job-level" :cap="level >= cap">{{level > 0 ? level : '-'}}</span>
   </span>
 </template>
 
